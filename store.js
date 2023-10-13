@@ -6,7 +6,7 @@ import {
   signOut,
   updateProfile,
 } from 'firebase/auth';
-import { app, auth } from './firebase-config';
+import { auth } from './firebase-config';
 
 export const AuthStore = new Store({
   isLoggedIn: false,
@@ -15,7 +15,6 @@ export const AuthStore = new Store({
 });
 
 const unsub = onAuthStateChanged(auth, (user) => {
-  console.log('onAuthStateChange', user);
   AuthStore.update((store) => {
     store.user = user;
     store.isLoggedIn = user ? true : false;
@@ -49,13 +48,11 @@ export const appSignOut = async () => {
   }
 };
 
-export const appSignUp = async (email, password, displayName) => {
+export const appSignUp = async (email, password, name) => {
   try {
-    // this will trigger onAuthStateChange to update the store..
     const resp = await createUserWithEmailAndPassword(auth, email, password);
 
-    // add the displayName
-    await updateProfile(resp.user, { displayName });
+    await updateProfile(resp.user, { displayName: name });
 
     AuthStore.update((store) => {
       store.user = auth.currentUser;

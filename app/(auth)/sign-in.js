@@ -19,7 +19,15 @@ const SignIn = () => {
   const passwordRef = useRef('');
 
   const handleSignIn = async () => {
-    const resp = await appSignIn(emailRef.current, passwordRef.current);
+    const email = emailRef.current.trim();
+    const password = passwordRef.current.trim();
+
+    if (!email || !password) {
+      Alert.alert('Cannot Sign In', 'Please fill in all fields');
+      return;
+    }
+
+    const resp = await appSignIn(email, password);
     if (resp?.user) {
       router.replace('/(routes)/home');
     } else {
@@ -29,9 +37,6 @@ const SignIn = () => {
   };
 
   const gotoSignUp = () => {
-    AuthStore.update((s) => {
-      s.isLoggedIn = true;
-    });
     router.push('/sign-up');
   };
 

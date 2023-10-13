@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import { AuthStore } from '../../../store';
 
 const Home = () => {
+  const { user, isLoggedIn } = AuthStore.useState();
   return (
     <View>
-      <Text>Home</Text>
+      <Text>{isLoggedIn ? `Welcome ${user?.displayName}` : 'Loading...'}</Text>
     </View>
   );
 };
