@@ -4,10 +4,13 @@
     "web": {
       "bundler": "metro"
     },
-    "plugins": [
-      "expo-router"
-    ],
+    "plugins": ["expo-router"],
     "name": "expo-app-template",
-    "slug": "expo-app-template"
+    "slug": "expo-app-template",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A5F33"
+    }
   }
 }
