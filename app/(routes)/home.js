@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={Logo} resizeMode="contain" style={{ height: 100 }} />
+        <Image source={Logo} resizeMode="contain" style={{ height: 80 }} />
       </View>
       <Carousel />
       <View style={styles.actionContainer}>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingTop: 15,
   },
   actionContainer: {
     display: 'flex',
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     paddingHorizontal: 10,
+    marginBottom: 20,
   },
   searchContainer: {
     display: 'flex',
