@@ -1,25 +1,23 @@
 import {
   View,
-  Text,
   Image,
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 
-import { AuthStore } from '../../../store';
-import useFetch from '../../../hooks/useFetch';
-import { Carousel, MusicFeed } from '../../../components';
-import { FilterIcon, Logo, SearchIcon } from '../../../constants/images';
-import { COLORS, SIZES } from '../../../constants/theme';
+import { Carousel, MusicFeed } from '../../components';
+import { FilterIcon, Logo, SearchIcon } from '../../constants/images';
+import { COLORS, SIZES } from '../../constants/theme';
 
 const Home = () => {
   // TODO: Display data from useFetch
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={Logo} resizeMode="contain" style={{ width: 200 }} />
+        <Image source={Logo} resizeMode="contain" style={{ height: 100 }} />
       </View>
       <Carousel />
       <View style={styles.actionContainer}>
@@ -43,7 +41,7 @@ const Home = () => {
       </View>
 
       <MusicFeed />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -56,6 +54,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
   actionContainer: {
     display: 'flex',

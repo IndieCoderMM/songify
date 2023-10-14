@@ -1,8 +1,25 @@
 import Logo from '../assets/logo.png';
 import Lock from '../assets/lock.png';
-import GoogleLogo from '../assets/google.png';
-import FacebookLogo from '../assets/facebook.png';
-import SearchIcon from '../assets/search.png';
-import FilterIcon from '../assets/filter.png';
+import GoogleLogo from '../assets/icons/google.png';
+import FacebookLogo from '../assets/icons/facebook.png';
+import SearchIcon from '../assets/icons/search.png';
+import FilterIcon from '../assets/icons/filter.png';
+import HomeIcon from '../assets/icons/home.png';
+import HeartIcon from '../assets/icons/heart.png';
+import PlayIcon from '../assets/icons/play.png';
+import UserIcon from '../assets/icons/user.png';
+import SettingIcon from '../assets/icons/setting.png';
 
-export { Logo, Lock, GoogleLogo, FacebookLogo, SearchIcon, FilterIcon };
+export {
+  Logo,
+  Lock,
+  GoogleLogo,
+  FacebookLogo,
+  SearchIcon,
+  FilterIcon,
+  HomeIcon,
+  HeartIcon,
+  PlayIcon,
+  UserIcon,
+  SettingIcon,
+};
