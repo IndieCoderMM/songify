@@ -5,6 +5,7 @@ import {
   Alert,
   Image,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useRef } from 'react';
@@ -49,7 +50,7 @@ const SignUp = () => {
         <Image source={Logo} resizeMode="contain" />
       </View>
 
-      <View style={styles.formContainer}>
+      <KeyboardAvoidingView style={styles.formContainer}>
         <View>
           <Text style={styles.label}>Name</Text>
           <TextInput
@@ -86,7 +87,7 @@ const SignUp = () => {
             style={styles.textInput}
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
       <TouchableOpacity onPress={handleSignUp} style={styles.submit}>
         <Text style={styles.submitText}>Sign Up</Text>
       </TouchableOpacity>

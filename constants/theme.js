@@ -7,6 +7,8 @@ export const COLORS = {
   white: '#FFFFFF',
   black: '#000000',
   gray: '#D9D9D9',
+
+  danger: '#FF4D4F',
 };
 
 export const SIZES = {

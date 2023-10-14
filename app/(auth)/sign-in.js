@@ -3,6 +3,7 @@ import {
   View,
   TextInput,
   Alert,
+  KeyboardAvoidingView,
   Image,
   TouchableOpacity,
 } from 'react-native';
@@ -30,7 +31,7 @@ const SignIn = () => {
 
     const resp = await appSignIn(email, password);
     if (resp?.user) {
-      router.replace('/(routes)/home');
+      router.push('/(routes)/home');
     } else {
       console.log(resp.error);
       Alert.alert('Login Error', resp.error?.message);
@@ -47,7 +48,7 @@ const SignIn = () => {
         <Image source={Logo} resizeMode="contain" />
       </View>
 
-      <View style={styles.formContainer}>
+      <KeyboardAvoidingView style={styles.formContainer}>
         <View>
           <Text style={styles.label}>Email</Text>
           <TextInput
@@ -72,7 +73,7 @@ const SignIn = () => {
             style={styles.textInput}
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
       <TouchableOpacity onPress={handleSignIn} style={styles.submit}>
         <Text style={styles.submitText}>Log In</Text>
       </TouchableOpacity>

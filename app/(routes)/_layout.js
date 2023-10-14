@@ -15,10 +15,11 @@ const TabIcon = ({ focused, icon }) => {
     <Image
       source={icon}
       resizeMode="contain"
-      width={30}
-      height={30}
       style={{
         tintColor: focused ? COLORS.lightGreen : COLORS.darkGreen,
+        borderWidth: icon === PlayIcon ? 2 : 0,
+        borderColor: COLORS.white,
+        borderRadius: icon === PlayIcon ? 50 : 0,
       }}
     />
   );
