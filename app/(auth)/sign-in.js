@@ -6,12 +6,13 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { AuthStore, appSignIn } from '../../store.js';
+import { appSignIn } from '../../store';
 import { useRouter } from 'expo-router';
-import Logo from '../../assets/logo.png';
 import { useRef } from 'react';
-import styles from '../../styles/authStyles.js';
-import { SIZES } from '../../constants/Theme.js';
+
+import styles from '../../styles/auth.style';
+import { SIZES } from '../../constants/theme';
+import { Logo } from '../../constants/images';
 
 const SignIn = () => {
   const router = useRouter();

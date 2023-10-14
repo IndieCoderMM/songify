@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { COLORS } from '../../constants/Theme';
-import Lock from '../../assets/lock.png';
+import { COLORS } from '../../constants/theme';
+import { Lock } from '../../constants/images';
 
 const ForgotPassword = () => {
   return (

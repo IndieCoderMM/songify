@@ -1,6 +1,7 @@
 export const COLORS = {
   darkGreen: '#0A5F33',
   lightGreen: '#1ED760',
+  lighterGreen: '#539674',
   green: '#2EB872',
 
   white: '#FFFFFF',

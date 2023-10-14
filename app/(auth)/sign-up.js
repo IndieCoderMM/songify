@@ -6,14 +6,13 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { AuthStore, appSignUp } from '../../store.js';
 import { useRouter } from 'expo-router';
-import Logo from '../../assets/logo.png';
 import { useRef } from 'react';
-import styles from '../../styles/authStyles.js';
-import GoogleLogo from '../../assets/google.png';
-import FacebookLogo from '../../assets/facebook.png';
-import { SIZES } from '../../constants/Theme.js';
+import { appSignUp } from '../../store';
+
+import styles from '../../styles/auth.style';
+import { SIZES } from '../../constants/theme';
+import { Logo, GoogleLogo, FacebookLogo } from '../../constants/images';
 
 const SignUp = () => {
   const router = useRouter();
