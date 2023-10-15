@@ -18,9 +18,9 @@ const Index = () => {
     const inAuthGroup = segments[0] === '(auth)';
 
     if (!isLoggedIn && !inAuthGroup) {
-      router.push('/(auth)/sign-in');
+      router.replace('/sign-in');
     } else if (isLoggedIn) {
-      router.push('/(routes)/home');
+      router.replace('/home');
     }
   }, [segments, navigationState?.key, initialized]);
 

@@ -7,7 +7,7 @@ import {
   SettingIcon,
   UserIcon,
 } from '../../constants/images';
-import { Image, View } from 'react-native';
+import { Image } from 'react-native';
 import { COLORS, SIZES } from '../../constants/theme';
 
 const TabIcon = ({ focused, icon }) => {
@@ -51,6 +51,7 @@ const Layout = () => {
               <TabIcon focused={focused} icon={HomeIcon} />
             ),
             tabBarShowLabel: false,
+            tabBarHideOnKeyboard: true,
           }}
         />
         <Tabs.Screen
@@ -69,6 +70,9 @@ const Layout = () => {
               <TabIcon focused={focused} icon={PlayIcon} />
             ),
             tabBarShowLabel: false,
+            tabBarStyle: {
+              display: 'none',
+            },
           }}
         />
         <Tabs.Screen

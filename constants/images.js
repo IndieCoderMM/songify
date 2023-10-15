@@ -12,6 +12,11 @@ import HeartIcon from '../assets/icons/heart.png';
 import PlayIcon from '../assets/icons/play.png';
 import UserIcon from '../assets/icons/user.png';
 import SettingIcon from '../assets/icons/setting.png';
+import XIcon from '../assets/icons/cross.png';
+import Heart2Icon from '../assets/icons/heart2.png';
+import PrevIcon from '../assets/icons/prev.png';
+import PauseIcon from '../assets/icons/pause.png';
+import Play2Icon from '../assets/icons/play2.png';
 
 export {
   Logo,
@@ -28,4 +33,9 @@ export {
   Banner1,
   Banner2,
   Banner3,
+  XIcon,
+  Heart2Icon,
+  PrevIcon,
+  PauseIcon,
+  Play2Icon,
 };

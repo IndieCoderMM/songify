@@ -6,9 +6,9 @@ import {
   signOut,
   updateProfile,
 } from 'firebase/auth';
-import { auth } from './firebase-config';
+import { auth } from '../firebase-config';
 
-export const AuthStore = new Store({
+const AuthStore = new Store({
   isLoggedIn: false,
   initialized: false,
   user: null,
@@ -66,3 +66,5 @@ export const appSignUp = async (email, password, name) => {
 };
 
 registerInDevtools({ AuthStore });
+
+export default AuthStore;
