@@ -3,24 +3,36 @@ import React from 'react';
 import data from '../../constants/sampleData';
 import TrackItem from './TrackItem';
 
+const VirtualizedView = ({ children }) => (
+  <FlatList
+    data={[]}
+    renderItem={null}
+    keyExtractor={null}
+    ListEmptyComponent={null}
+    ListHeaderComponent={() => <>{children}</>}
+  />
+);
+
 const MusicFeed = () => {
   return (
-    <ScrollView>
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => {
-          return (
-            <TrackItem
-              albumCover={item.album.cover_small}
-              title={item.title_short}
-              artist={item.artist.name}
-              duration={item.duration}
-            />
-          );
-        }}
-      />
-    </ScrollView>
+    <VirtualizedView>
+      <ScrollView>
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            return (
+              <TrackItem
+                albumCover={item.album.cover_small}
+                title={item.title_short}
+                artist={item.artist.name}
+                duration={item.duration}
+              />
+            );
+          }}
+        />
+      </ScrollView>
+    </VirtualizedView>
   );
 };
 

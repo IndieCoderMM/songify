@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
-import React from 'react';
-import { AuthStore } from '../../store';
+import AuthStore from '../../store/auth';
 import { COLORS, SIZES } from '../../constants/theme';
 import { UserIcon } from '../../constants/images';
 

@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import React from 'react';
 import { COLORS, SIZES } from '../../constants/theme';
-import { appSignOut } from '../../store';
+import { appSignOut } from '../../store/auth';
 import { useRouter } from 'expo-router';
 
 const Settings = () => {

@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { appSignIn } from '../../store';
+import { appSignIn } from '../../store/auth';
 import { useRouter } from 'expo-router';
 import { useRef } from 'react';
 

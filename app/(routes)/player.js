@@ -1,14 +1,43 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { Heart2Icon, XIcon } from '../../constants/images';
 import data from '../../constants/sampleData';
 import { Controls } from '../../components';
 import { COLORS, SIZES } from '../../constants/theme';
+import PlayerStore, {
+  activatePlayer,
+  nextSong,
+  prevSong,
+  setAllSongs,
+  setIsPlaying,
+} from '../../store/player';
 
 const Player = () => {
   const router = useRouter();
-  const currentSong = data[0];
+
+  const player = PlayerStore.useState();
+  const currentSong = player.currentSong;
+
+  useEffect(() => {
+    if (player.isActive) {
+      return;
+    }
+    setAllSongs(data);
+    activatePlayer();
+  }, []);
+
+  const handlePlayPause = () => {
+    setIsPlaying(!player.isPlaying);
+  };
+
+  const handleNext = () => {
+    nextSong();
+  };
+
+  const handlePrev = () => {
+    prevSong();
+  };
 
   const addToFavorites = () => {
     console.log('Add to favorites');
@@ -35,17 +64,22 @@ const Player = () => {
       </View>
 
       <Image
-        src={currentSong.album.cover_medium}
+        src={currentSong?.album.cover_medium}
         resizeMode="contain"
         style={styles.cover}
       />
 
       <View style={styles.detailsContainer}>
-        <Text style={styles.title}>{currentSong.title}</Text>
-        <Text style={styles.artist}>{currentSong.artist.name}</Text>
+        <Text style={styles.title}>{currentSong?.title}</Text>
+        <Text style={styles.artist}>{currentSong?.artist.name}</Text>
       </View>
 
-      <Controls />
+      <Controls
+        isPlaying={player.isPlaying}
+        handlePlayPause={handlePlayPause}
+        handleNext={handleNext}
+        handlePrev={handlePrev}
+      />
     </View>
   );
 };

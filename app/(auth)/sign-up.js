@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useRef } from 'react';
-import { appSignUp } from '../../store';
+import { appSignUp } from '../../store/auth';
 
 import styles from '../../styles/auth.style';
 import { SIZES } from '../../constants/theme';
