@@ -1,8 +1,25 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import { COLORS, SIZES } from '../../constants/theme';
 import formatDuration from '../../utils/formatDuration';
+import PlayerStore, {
+  activatePlayer,
+  setCurrentSong,
+} from '../../store/player';
+import data from '../../constants/sampleData';
+import { useRouter } from 'expo-router';
 
-const TrackItem = ({ albumCover, title, artist, duration }) => {
+const TrackItem = ({ albumCover, title, artist, duration, index }) => {
+  const player = PlayerStore.useState();
+  const router = useRouter();
+
+  const playMusic = () => {
+    if (!player.isActive) {
+      activatePlayer(data);
+    }
+    setCurrentSong(index);
+    router.push('/player');
+  };
+
   return (
     <View
       style={{
@@ -10,7 +27,7 @@ const TrackItem = ({ albumCover, title, artist, duration }) => {
         marginVertical: 5,
       }}
     >
-      <View style={styles.container}>
+      <Pressable style={styles.container} onPress={playMusic}>
         <View>
           <Image
             src={albumCover}
@@ -22,10 +39,11 @@ const TrackItem = ({ albumCover, title, artist, duration }) => {
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.artist}>{artist}</Text>
         </View>
+        {/* TODO Add slider component */}
         <View style={styles.duration}>
           <Text style={styles.durationText}>{formatDuration(duration)}</Text>
         </View>
-      </View>
+      </Pressable>
     </View>
   );
 };

@@ -1,6 +1,4 @@
 import { View, Text, FlatList, ScrollView } from 'react-native';
-import React from 'react';
-import data from '../../constants/sampleData';
 import TrackItem from './TrackItem';
 
 const VirtualizedView = ({ children }) => (
@@ -13,20 +11,21 @@ const VirtualizedView = ({ children }) => (
   />
 );
 
-const MusicFeed = () => {
+const MusicFeed = ({ data }) => {
   return (
     <VirtualizedView>
       <ScrollView>
         <FlatList
           data={data}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             return (
               <TrackItem
                 albumCover={item.album.cover_small}
                 title={item.title_short}
                 artist={item.artist.name}
                 duration={item.duration}
+                index={index}
               />
             );
           }}

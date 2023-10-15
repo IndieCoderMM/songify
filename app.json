@@ -4,11 +4,9 @@
     "web": {
       "bundler": "metro"
     },
-    "plugins": [
-      "expo-router"
-    ],
-    "name": "expo-app-template",
-    "slug": "expo-app-template",
+    "plugins": ["expo-router"],
+    "name": "songify",
+    "slug": "songify",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

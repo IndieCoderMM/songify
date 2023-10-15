@@ -1,72 +1,87 @@
 import { Store, registerInDevtools } from 'pullstate';
-import SoundPlayer from 'react-native-sound-player';
+import axios from 'axios';
 
 const PlayerStore = new Store({
   allSongs: [],
   isPlaying: false,
   currentIndex: null,
   currentSong: null,
+  currentSound: null,
   isActive: false,
 });
 
-export const setAllSongs = (songs) => {
+export const fetchAllSongs = async (query) => {
+  const options = {
+    method: 'GET',
+    url: 'https://deezerdevs-deezer.p.rapidapi.com/search',
+    params: { q: query },
+    headers: {
+      'X-RapidAPI-Key': process.env.EXPO_PUBLIC_RAPID_API_KEY,
+      'X-RapidAPI-Host': 'deezerdevs-deezer.p.rapidapi.com',
+    },
+  };
+
+  try {
+    const response = await axios.request(options);
+    PlayerStore.update((store) => {
+      store.allSongs = response.data.data.slice(0, 20);
+      store.isActive = true;
+      store.currentIndex = 0;
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const setCurrentSound = (sound) => {
   PlayerStore.update((store) => {
-    store.allSongs = songs;
+    store.currentSound = sound;
   });
 };
 
-export const activatePlayer = () => {
+export const activatePlayer = (data) => {
   PlayerStore.update((store) => {
-    if (store.allSongs.length === 0) {
-      return;
-    }
+    store.allSongs = data;
     store.isActive = true;
     store.currentIndex = 0;
+  });
+};
+
+export const updateCurrentSong = () => {
+  PlayerStore.update((store) => {
     store.currentSong = store.allSongs[store.currentIndex];
-    SoundPlayer.loadUrl(store.currentSong.preview);
   });
 };
 
 export const setCurrentSong = (index) => {
   PlayerStore.update((store) => {
     store.currentIndex = index;
-    store.currentSong = store.allSongs[index];
-    SoundPlayer.loadUrl(store.currentSong.preview);
   });
 };
 
 export const setIsPlaying = (isPlaying) => {
   PlayerStore.update((store) => {
     store.isPlaying = isPlaying;
-    if (isPlaying) {
-      SoundPlayer.play();
-    } else {
-      SoundPlayer.pause();
-    }
   });
 };
 
-export const nextSong = () => {
+export const goToNext = () => {
   PlayerStore.update((store) => {
     if (store.currentIndex === store.allSongs.length - 1) {
       store.currentIndex = 0;
-      store.currentSong = store.allSongs[store.currentIndex];
       return;
     }
     store.currentIndex = store.currentIndex + 1;
-    store.currentSong = store.allSongs[store.currentIndex];
   });
 };
 
-export const prevSong = () => {
+export const goToPrev = () => {
   PlayerStore.update((store) => {
     if (store.currentIndex === 0) {
       store.currentIndex = store.allSongs.length - 1;
-      store.currentSong = store.allSongs[store.currentIndex];
       return;
     }
     store.currentIndex = store.currentIndex - 1;
-    store.currentSong = store.allSongs[store.currentIndex];
   });
 };
 

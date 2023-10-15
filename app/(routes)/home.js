@@ -10,9 +10,18 @@ import {
 import { Carousel, MusicFeed } from '../../components';
 import { FilterIcon, Logo, SearchIcon } from '../../constants/images';
 import { COLORS, SIZES } from '../../constants/theme';
+import PlayerStore, { fetchAllSongs } from '../../store/player';
+import { useEffect } from 'react';
 
 const Home = () => {
   // TODO: Display data from useFetch
+  const { isActive, allSongs } = PlayerStore.useState();
+
+  useEffect(() => {
+    if (!isActive) {
+      fetchAllSongs('taylor swift');
+    }
+  }, [isActive]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -40,7 +49,7 @@ const Home = () => {
         </TouchableOpacity>
       </View>
 
-      <MusicFeed />
+      <MusicFeed data={allSongs} />
     </SafeAreaView>
   );
 };

@@ -1,45 +1,127 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import React, { useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { Heart2Icon, XIcon } from '../../constants/images';
-import data from '../../constants/sampleData';
 import { Controls } from '../../components';
 import { COLORS, SIZES } from '../../constants/theme';
 import PlayerStore, {
-  activatePlayer,
-  nextSong,
-  prevSong,
-  setAllSongs,
+  goToNext,
+  goToPrev,
+  updateCurrentSong,
+  setCurrentSound,
   setIsPlaying,
+  fetchAllSongs,
 } from '../../store/player';
+import { Audio } from 'expo-av';
 
 const Player = () => {
   const router = useRouter();
-
-  const player = PlayerStore.useState();
-  const currentSong = player.currentSong;
+  const { isActive, isPlaying, currentSong, currentSound, currentIndex } =
+    PlayerStore.useState();
+  const [progress, setProgress] = useState(null);
+  // TODO: Add progress to store
 
   useEffect(() => {
-    if (player.isActive) {
-      return;
+    if (!isActive) {
+      fetchAllSongs('taylor swift');
     }
-    setAllSongs(data);
-    activatePlayer();
+    updateCurrentSong();
   }, []);
 
-  const handlePlayPause = () => {
-    setIsPlaying(!player.isPlaying);
+  useEffect(() => {
+    updateCurrentSong();
+  }, [currentIndex]);
+
+  const play = async () => {
+    try {
+      if (currentSound) {
+        currentSound.setOnPlaybackStatusUpdate(null);
+        await currentSound.stopAsync();
+        await currentSound.unloadAsync();
+      }
+
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        staysActiveInBackground: true,
+        shouldDuckAndroid: false,
+        playThroughEarpieceAndroid: false,
+      });
+
+      const { sound, status } = await Audio.Sound.createAsync(
+        {
+          uri: currentSong.preview,
+        },
+        {
+          shouldPlay: true,
+          isLooping: false,
+        },
+        onPlaybackStatusUpdate,
+      );
+
+      onPlaybackStatusUpdate(status);
+      setCurrentSound(sound);
+      setIsPlaying(status.isLoaded);
+
+      await sound.playAsync();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleNext = () => {
-    nextSong();
+  const onPlaybackStatusUpdate = async (status) => {
+    if (status.isLoaded && status.isPlaying) {
+      const progress = status.positionMillis / status.durationMillis;
+      setProgress(progress);
+    }
+    if (status.didJustFinish) {
+      setCurrentSound(null);
+      await playNextTrack();
+    }
   };
 
-  const handlePrev = () => {
-    prevSong();
+  const playNextTrack = async () => {
+    if (currentSound) {
+      await currentSound.stopAsync();
+      setCurrentSound(null);
+    }
+
+    goToNext();
+    await play();
+  };
+
+  const playPrevTrack = async () => {
+    if (currentSound) {
+      await currentSound.stopAsync();
+      setCurrentSound(null);
+    }
+
+    goToPrev();
+    await play();
+  };
+
+  const handlePlayPause = async () => {
+    if (isPlaying) {
+      setIsPlaying(false);
+      await currentSound.pauseAsync();
+      return;
+    }
+    if (!currentSound) {
+      await play();
+      return;
+    }
+    await currentSound.playAsync();
+    setIsPlaying(true);
   };
 
   const addToFavorites = () => {
+    // TODO: Add to favorites
     console.log('Add to favorites');
   };
 
@@ -73,13 +155,16 @@ const Player = () => {
         <Text style={styles.title}>{currentSong?.title}</Text>
         <Text style={styles.artist}>{currentSong?.artist.name}</Text>
       </View>
-
-      <Controls
-        isPlaying={player.isPlaying}
-        handlePlayPause={handlePlayPause}
-        handleNext={handleNext}
-        handlePrev={handlePrev}
-      />
+      {isActive ? (
+        <Controls
+          isPlaying={isPlaying}
+          handlePlayPause={handlePlayPause}
+          handleNext={playNextTrack}
+          handlePrev={playPrevTrack}
+        />
+      ) : (
+        <ActivityIndicator size="large" color={COLORS.white} />
+      )}
     </View>
   );
 };
