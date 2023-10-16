@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginVertical: 30,
   },
   next: {
     transform: [{ rotate: '180deg' }],

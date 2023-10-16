@@ -23,8 +23,9 @@ export const fetchAllSongs = async (query) => {
 
   try {
     const response = await axios.request(options);
+    const data = response.data.data.slice(0, 20);
     PlayerStore.update((store) => {
-      store.allSongs = response.data.data.slice(0, 20);
+      store.allSongs = data;
       store.isActive = true;
       store.currentIndex = 0;
     });

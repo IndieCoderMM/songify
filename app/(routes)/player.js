@@ -8,8 +8,10 @@ import {
 } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
+import { Audio } from 'expo-av';
+
 import { Heart2Icon, XIcon } from '../../constants/images';
-import { Controls } from '../../components';
+import { Controls, ProgressBar } from '../../components';
 import { COLORS, SIZES } from '../../constants/theme';
 import PlayerStore, {
   goToNext,
@@ -19,14 +21,13 @@ import PlayerStore, {
   setIsPlaying,
   fetchAllSongs,
 } from '../../store/player';
-import { Audio } from 'expo-av';
 
 const Player = () => {
   const router = useRouter();
   const { isActive, isPlaying, currentSong, currentSound, currentIndex } =
     PlayerStore.useState();
-  const [progress, setProgress] = useState(null);
-  // TODO: Add progress to store
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
   useEffect(() => {
     if (!isActive) {
@@ -77,8 +78,8 @@ const Player = () => {
 
   const onPlaybackStatusUpdate = async (status) => {
     if (status.isLoaded && status.isPlaying) {
-      const progress = status.positionMillis / status.durationMillis;
-      setProgress(progress);
+      setCurrentTime(status.positionMillis / 1000);
+      setDuration(status.durationMillis / 1000);
     }
     if (status.didJustFinish) {
       setCurrentSound(null);
@@ -155,6 +156,7 @@ const Player = () => {
         <Text style={styles.title}>{currentSong?.title}</Text>
         <Text style={styles.artist}>{currentSong?.artist.name}</Text>
       </View>
+      <ProgressBar currentTime={currentTime} duration={duration} />
       {isActive ? (
         <Controls
           isPlaying={isPlaying}
