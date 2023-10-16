@@ -28,6 +28,10 @@
     "owner": "heinthant",
     "ios": {
       "bundleIdentifier": "com.heinthant.songify"
+    },
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/219ba3a5-0e73-462e-83ba-f196723cfe9a"
     }
   }
 }
