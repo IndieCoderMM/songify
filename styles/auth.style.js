@@ -80,6 +80,8 @@ const style = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    textAlign: 'center',
+    textAlignVertical: 'center',
     borderRadius: 50,
     color: COLORS.darkGreen,
     fontSize: SIZES.large,

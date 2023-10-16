@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { appSignIn } from '../../store/auth';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { useRef } from 'react';
 
 import styles from '../../styles/auth.style';
@@ -36,10 +36,6 @@ const SignIn = () => {
       console.log(resp.error);
       Alert.alert('Login Error', resp.error?.message);
     }
-  };
-
-  const gotoSignUp = () => {
-    router.push('/sign-up');
   };
 
   return (
@@ -85,18 +81,13 @@ const SignIn = () => {
         }}
       >
         No Account?{' '}
-        <Text onPress={gotoSignUp} style={styles.link}>
+        <Link href="/sign-up" style={styles.link}>
           Sign Up
-        </Text>
+        </Link>
       </Text>
-      <Text
-        style={{ fontSize: SIZES.large }}
-        onPress={() => {
-          router.push('/(auth)/forgot-password');
-        }}
-      >
+      <Link href="/forgot-password" style={{ fontSize: SIZES.large }}>
         Forgot Password?
-      </Text>
+      </Link>
     </View>
   );
 };

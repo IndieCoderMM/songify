@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   updateProfile,
+  GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth } from '../firebase-config';
 
@@ -25,6 +26,20 @@ const unsub = onAuthStateChanged(auth, (user) => {
 export const appSignIn = async (email, password) => {
   try {
     const resp = await signInWithEmailAndPassword(auth, email, password);
+    AuthStore.update((store) => {
+      store.user = resp.user;
+      store.isLoggedIn = resp.user ? true : false;
+    });
+    return { user: auth.currentUser };
+  } catch (e) {
+    return { error: e };
+  }
+};
+
+export const googleSignIn = async ({ id_token }) => {
+  const credential = GoogleAuthProvider.credential(id_token);
+  try {
+    const resp = await signInWithCredential(auth, credential);
     AuthStore.update((store) => {
       store.user = resp.user;
       store.isLoggedIn = resp.user ? true : false;

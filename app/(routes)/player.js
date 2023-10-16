@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { Audio } from 'expo-av';
 
-import { Heart2Icon, XIcon } from '../../constants/images';
+import { Heart2Icon, HeartOutlineIcon, XIcon } from '../../constants/images';
 import { Controls, ProgressBar } from '../../components';
 import { COLORS, SIZES } from '../../constants/theme';
 import PlayerStore, {
@@ -19,6 +19,7 @@ import PlayerStore, {
   gotoPreviousSong,
   setIsPlaying,
 } from '../../store/player';
+import QueryStore from '../../store/query';
 
 const Player = () => {
   const router = useRouter();
@@ -28,13 +29,15 @@ const Player = () => {
     currentAudio,
     currentSongMetadata: currentSong,
   } = PlayerStore.useState();
+  const { query } = QueryStore.useState();
+
   const [currentSound, setCurrentSound] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
     if (!isActive) {
-      fetchAllSongs('taylor swift');
+      fetchAllSongs(query);
     }
 
     play({ uri: currentAudio });
@@ -149,8 +152,8 @@ const Player = () => {
         <Text style={styles.headerText}>Playing Music</Text>
         <TouchableOpacity onPress={addToFavorites}>
           <Image
-            source={Heart2Icon}
-            style={{ width: 30, height: 30 }}
+            source={HeartOutlineIcon}
+            style={{ width: 40, height: 40 }}
             resizeMode="contain"
           />
         </TouchableOpacity>

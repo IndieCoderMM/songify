@@ -8,18 +8,19 @@ import {
 } from 'react-native';
 
 import { Carousel, MusicFeed } from '../../components';
-import { FilterIcon, Logo, SearchIcon } from '../../constants/images';
+import { BellIcon, FilterIcon, Logo, SearchIcon } from '../../constants/images';
 import { COLORS, SIZES } from '../../constants/theme';
 import PlayerStore, { fetchAllSongs } from '../../store/player';
 import { useEffect } from 'react';
+import QueryStore from '../../store/query';
 
 const Home = () => {
-  // TODO: Display data from useFetch
   const { isActive, songs: allSongs } = PlayerStore.useState();
+  const { query } = QueryStore.useState();
 
   useEffect(() => {
     if (!isActive) {
-      fetchAllSongs('taylor swift');
+      fetchAllSongs(query);
     }
   }, [isActive]);
 
@@ -27,6 +28,7 @@ const Home = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={Logo} resizeMode="contain" style={{ height: 80 }} />
+        <Image source={BellIcon} resizeMode="contain" style={styles.bell} />
       </View>
       <Carousel />
       <View style={styles.actionContainer}>
@@ -64,6 +66,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 15,
+    position: 'relative',
+  },
+  bell: {
+    position: 'absolute',
+    right: 10,
+    top: 30,
+    width: 30,
+    height: 30,
   },
   actionContainer: {
     display: 'flex',

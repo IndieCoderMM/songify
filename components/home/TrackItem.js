@@ -30,7 +30,9 @@ const TrackItem = ({ albumCover, title, artist, duration, index }) => {
           />
         </View>
         <View style={styles.trackInfo}>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title} numberOfLines={1}>
+            {title}
+          </Text>
           <Text style={styles.artist}>{artist}</Text>
         </View>
         {/* TODO Add slider component */}
@@ -68,6 +70,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: SIZES.large,
     fontWeight: 'semibold',
+    paddingRight: 8,
   },
   artist: {
     color: COLORS.white,

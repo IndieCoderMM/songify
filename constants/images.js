@@ -17,6 +17,8 @@ import Heart2Icon from '../assets/icons/heart2.png';
 import PrevIcon from '../assets/icons/prev.png';
 import PauseIcon from '../assets/icons/pause.png';
 import Play2Icon from '../assets/icons/play2.png';
+import BellIcon from '../assets/icons/bell.png';
+import HeartOutlineIcon from '../assets/icons/heart_outline.png';
 
 export {
   Logo,
@@ -38,4 +40,6 @@ export {
   PrevIcon,
   PauseIcon,
   Play2Icon,
+  BellIcon,
+  HeartOutlineIcon,
 };

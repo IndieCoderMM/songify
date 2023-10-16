@@ -7,19 +7,45 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
-import { useRouter } from 'expo-router';
-import { useRef } from 'react';
-import { appSignUp } from '../../store/auth';
+import { Link, useRouter } from 'expo-router';
+import { useEffect, useRef } from 'react';
 
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+
+import { appSignUp, googleSignIn } from '../../store/auth';
 import styles from '../../styles/auth.style';
 import { SIZES } from '../../constants/theme';
 import { Logo, GoogleLogo, FacebookLogo } from '../../constants/images';
 
+WebBrowser.maybeCompleteAuthSession();
+
 const SignUp = () => {
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
+    androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
+  });
   const router = useRouter();
   const nameRef = useRef('');
   const emailRef = useRef('');
   const passwordRef = useRef('');
+
+  useEffect(() => {
+    const signInWithGoogle = async ({ id_token }) => {
+      const resp = await googleSignIn({ id_token });
+      if (resp?.user) {
+        router.replace('/home');
+      } else {
+        console.log(resp.error);
+        Alert.alert('Sign In Error', resp.error?.message);
+      }
+    };
+
+    if (response?.type === 'success') {
+      const { id_token } = response.params;
+      signInWithGoogle({ id_token });
+    }
+  }, [response]);
 
   const handleSignUp = async () => {
     const name = nameRef.current.trim();
@@ -33,15 +59,11 @@ const SignUp = () => {
 
     const resp = await appSignUp(email, password, name);
     if (resp?.user) {
-      router.replace('/(routes)/home');
+      router.replace('/home');
     } else {
       console.log(resp.error);
       Alert.alert('Sign Up Error', resp.error?.message);
     }
-  };
-
-  const gotoSignIn = () => {
-    router.push('/sign-in');
   };
 
   return (
@@ -106,10 +128,20 @@ const SignUp = () => {
       </Text>
 
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={handleSignUp} style={styles.iconBtn}>
+        <TouchableOpacity
+          onPress={() => {
+            promptAsync();
+          }}
+          style={styles.iconBtn}
+        >
           <Image source={GoogleLogo} width={30} height={30} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleSignUp} style={styles.iconBtn}>
+        <TouchableOpacity
+          onPress={() => {
+            Alert.alert('Not Supported', 'Facebook login is not supported yet');
+          }}
+          style={styles.iconBtn}
+        >
           <Image source={FacebookLogo} width={30} height={30} />
         </TouchableOpacity>
       </View>
@@ -120,9 +152,9 @@ const SignUp = () => {
         }}
       >
         Already have an account?{' '}
-        <Text onPress={gotoSignIn} style={styles.link}>
+        <Link href="/sign-in" style={styles.link}>
           Log In
-        </Text>
+        </Link>
       </Text>
     </View>
   );
