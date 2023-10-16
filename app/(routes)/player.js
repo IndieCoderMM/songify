@@ -14,18 +14,21 @@ import { Heart2Icon, XIcon } from '../../constants/images';
 import { Controls, ProgressBar } from '../../components';
 import { COLORS, SIZES } from '../../constants/theme';
 import PlayerStore, {
-  goToNext,
-  goToPrev,
-  updateCurrentSong,
-  setCurrentSound,
-  setIsPlaying,
   fetchAllSongs,
+  gotoNextSong,
+  gotoPreviousSong,
+  setIsPlaying,
 } from '../../store/player';
 
 const Player = () => {
   const router = useRouter();
-  const { isActive, isPlaying, currentSong, currentSound, currentIndex } =
-    PlayerStore.useState();
+  const {
+    isActive,
+    isPlaying,
+    currentSongMetadata: currentSong,
+    currentAudio,
+  } = PlayerStore.useState();
+  const [currentSound, setCurrentSound] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
@@ -33,31 +36,29 @@ const Player = () => {
     if (!isActive) {
       fetchAllSongs('taylor swift');
     }
-    updateCurrentSong();
   }, []);
 
   useEffect(() => {
-    updateCurrentSong();
-  }, [currentIndex]);
+    if (currentAudio) {
+      play({ uri: currentAudio });
+    }
+  }, [currentAudio]);
 
-  const play = async () => {
+  const play = async ({ uri }) => {
+    if (currentSound) {
+      return;
+    }
     try {
-      if (currentSound) {
-        currentSound.setOnPlaybackStatusUpdate(null);
-        await currentSound.stopAsync();
-        await currentSound.unloadAsync();
-      }
-
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
-        staysActiveInBackground: true,
+        staysActiveInBackground: false,
         shouldDuckAndroid: false,
         playThroughEarpieceAndroid: false,
       });
 
       const { sound, status } = await Audio.Sound.createAsync(
         {
-          uri: currentSong.preview,
+          uri,
         },
         {
           shouldPlay: true,
@@ -90,31 +91,27 @@ const Player = () => {
   const playNextTrack = async () => {
     if (currentSound) {
       await currentSound.stopAsync();
+      await currentSound.unloadAsync();
       setCurrentSound(null);
     }
 
-    goToNext();
-    await play();
+    gotoNextSong();
   };
 
   const playPrevTrack = async () => {
     if (currentSound) {
       await currentSound.stopAsync();
+      await currentSound.unloadAsync();
       setCurrentSound(null);
     }
 
-    goToPrev();
-    await play();
+    gotoPreviousSong();
   };
 
   const handlePlayPause = async () => {
     if (isPlaying) {
       setIsPlaying(false);
       await currentSound.pauseAsync();
-      return;
-    }
-    if (!currentSound) {
-      await play();
       return;
     }
     await currentSound.playAsync();

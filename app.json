@@ -9,7 +9,7 @@
     "slug": "songify",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#0A5F33"
     },
     "extra": {

@@ -15,7 +15,7 @@ import { useEffect } from 'react';
 
 const Home = () => {
   // TODO: Display data from useFetch
-  const { isActive, allSongs } = PlayerStore.useState();
+  const { isActive, songs: allSongs } = PlayerStore.useState();
 
   useEffect(() => {
     if (!isActive) {
