@@ -3,24 +3,19 @@ import { View, Text, StyleSheet } from 'react-native';
 import { COLORS, SIZES } from '../../constants/theme';
 import formatDuration from '../../utils/formatDuration';
 
-const ProgressBar = ({ currentTime, duration }) => {
-  // const handleSeek = (value) => {
-  //   PlayerStore.update((s) => {
-  //     s.currentTime = value;
-  //   });
-  // };
-
+const ProgressBar = ({ currentTime, duration, handleSeek }) => {
   return (
     <View style={styles.container}>
       <Slider
         style={styles.slider}
         minimumValue={0}
         maximumValue={duration}
+        step={1}
         value={currentTime}
         minimumTrackTintColor={COLORS.white}
         maximumTrackTintColor={COLORS.white}
         thumbTintColor={COLORS.lightGreen}
-        disabled
+        onSlidingComplete={handleSeek}
       />
       <Text style={styles.time}>{formatDuration(currentTime)}</Text>
     </View>

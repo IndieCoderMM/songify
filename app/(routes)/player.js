@@ -25,8 +25,8 @@ const Player = () => {
   const {
     isActive,
     isPlaying,
-    currentSongMetadata: currentSong,
     currentAudio,
+    currentSongMetadata: currentSong,
   } = PlayerStore.useState();
   const [currentSound, setCurrentSound] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -36,13 +36,18 @@ const Player = () => {
     if (!isActive) {
       fetchAllSongs('taylor swift');
     }
-  }, []);
 
-  useEffect(() => {
-    if (currentAudio) {
-      play({ uri: currentAudio });
-    }
-  }, [currentAudio]);
+    play({ uri: currentAudio });
+
+    const unsub = PlayerStore.subscribe(
+      (s) => s.currentAudio,
+      async (newAudio) => {
+        await play({ uri: newAudio });
+      },
+    );
+
+    return () => unsub();
+  }, []);
 
   const play = async ({ uri }) => {
     if (currentSound) {
@@ -118,6 +123,14 @@ const Player = () => {
     setIsPlaying(true);
   };
 
+  const handleSeek = async (valueInSeconds) => {
+    if (!currentSound) {
+      return;
+    }
+
+    await currentSound.playFromPositionAsync(valueInSeconds * 1000);
+  };
+
   const addToFavorites = () => {
     // TODO: Add to favorites
     console.log('Add to favorites');
@@ -153,7 +166,11 @@ const Player = () => {
         <Text style={styles.title}>{currentSong?.title}</Text>
         <Text style={styles.artist}>{currentSong?.artist.name}</Text>
       </View>
-      <ProgressBar currentTime={currentTime} duration={duration} />
+      <ProgressBar
+        currentTime={currentTime}
+        duration={duration}
+        handleSeek={handleSeek}
+      />
       {isActive ? (
         <Controls
           isPlaying={isPlaying}

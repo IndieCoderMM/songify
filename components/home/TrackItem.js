@@ -1,22 +1,16 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
-import { COLORS, SIZES } from '../../constants/theme';
-import formatDuration from '../../utils/formatDuration';
-import PlayerStore, {
-  activatePlayer,
-  setCurrentSong,
-} from '../../store/player';
-import data from '../../constants/sampleData';
 import { useRouter } from 'expo-router';
 
+import { COLORS, SIZES } from '../../constants/theme';
+import formatDuration from '../../utils/formatDuration';
+import { setCurrentSong } from '../../store/player';
+
 const TrackItem = ({ albumCover, title, artist, duration, index }) => {
-  const player = PlayerStore.useState();
   const router = useRouter();
 
   const playMusic = () => {
-    if (!player.isActive) {
-      activatePlayer(data);
-    }
     setCurrentSong(index);
+
     router.push('/player');
   };
 
