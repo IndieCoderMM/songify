@@ -6,9 +6,10 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 import { Carousel, MusicFeed } from '../../components';
-import { BellIcon, FilterIcon, Logo, SearchIcon } from '../../constants/images';
+import { FilterIcon, Logo, SearchIcon } from '../../constants/images';
 import { COLORS, SIZES } from '../../constants/theme';
 import PlayerStore, { fetchAllSongs } from '../../store/player';
 import { useEffect } from 'react';
@@ -28,7 +29,12 @@ const Home = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={Logo} resizeMode="contain" style={{ height: 80 }} />
-        <Image source={BellIcon} resizeMode="contain" style={styles.bell} />
+        <FontAwesome
+          name="bell"
+          size={30}
+          color={COLORS.white}
+          style={styles.bell}
+        />
       </View>
       <Carousel />
       <View style={styles.actionContainer}>

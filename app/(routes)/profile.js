@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+
 import AuthStore from '../../store/auth';
 import { COLORS, SIZES } from '../../constants/theme';
-import { UserIcon } from '../../constants/images';
-
 const Profile = () => {
   const { user, isLoggedIn } = AuthStore.useState();
   if (!isLoggedIn) {
@@ -15,29 +15,78 @@ const Profile = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={user.photoURL ? { uri: user.photoURL } : UserIcon}
-          resizeMode="contain"
-          width={100}
-          height={100}
-        />
+      <View style={styles.header}>
+        <View style={styles.imageContainer}>
+          {user.photoURL ? (
+            <Image
+              source={user.photoURL}
+              resizeMode="contain"
+              width={100}
+              height={100}
+            />
+          ) : (
+            <FontAwesome5 name="user" size={50} color={COLORS.darkGreen} />
+          )}
+        </View>
+        <View>
+          <Text style={styles.text}>{user.displayName}</Text>
+          <Text style={styles.smallText}>{user.email}</Text>
+        </View>
       </View>
-      <Text style={styles.text}>{user.displayName}</Text>
-      <Text style={styles.smallText}>{user.email}</Text>
       <View style={styles.infoContainer}>
         <View style={styles.infoTile}>
+          <View style={styles.iconContainer}>
+            <MaterialIcons
+              name="headset-mic"
+              size={40}
+              color={COLORS.darkGreen}
+            />
+          </View>
           <Text style={styles.infoText}>156</Text>
           <Text style={styles.infoTitle}>Songs Listened</Text>
         </View>
         <View style={styles.infoTile}>
+          <View style={styles.iconContainer}>
+            <MaterialIcons name="favorite" size={40} color={COLORS.darkGreen} />
+          </View>
           <Text style={styles.infoText}>34</Text>
           <Text style={styles.infoTitle}>Favourites</Text>
         </View>
         <View style={styles.infoTile}>
+          <View style={styles.iconContainer}>
+            <MaterialIcons
+              name="queue-music"
+              size={40}
+              color={COLORS.darkGreen}
+            />
+          </View>
           <Text style={styles.infoText}>15</Text>
-          <Text style={styles.infoTitle}>Followers</Text>
+          <Text style={styles.infoTitle}>Playlists</Text>
         </View>
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          width: '100%',
+          paddingHorizontal: 20,
+          marginVertical: 30,
+        }}
+      >
+        <FontAwesome5
+          name="clock"
+          size={25}
+          color={COLORS.white}
+          style={{
+            marginRight: 10,
+            opacity: 0.9,
+          }}
+        />
+        <Text style={styles.text}>Recent Songs</Text>
+      </View>
+
+      <View>
+        <Text style={styles.smallText}>Empty! No recent songs to show</Text>
       </View>
     </View>
   );
@@ -49,24 +98,29 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.darkGreen,
     alignItems: 'center',
   },
+  header: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 50,
+    marginBottom: 20,
+    paddingHorizontal: 20,
+  },
   text: {
     color: COLORS.white,
     fontSize: SIZES.large,
     fontWeight: 'bold',
-    textAlign: 'center',
   },
   smallText: {
     color: COLORS.white,
     fontSize: SIZES.medium,
-    textAlign: 'center',
   },
   imageContainer: {
-    marginTop: 50,
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     borderRadius: 100,
+    marginRight: 20,
     overflow: 'hidden',
-    margin: 10,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -75,28 +129,35 @@ const styles = StyleSheet.create({
   infoContainer: {
     display: 'flex',
     flexDirection: 'row',
+    width: '90%',
     justifyContent: 'space-between',
-    width: '100%',
-    paddingHorizontal: 10,
-    marginVertical: 30,
+    backgroundColor: COLORS.lighterGreen,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+    borderRadius: 30,
+    marginVertical: 20,
   },
-  infoTile: {
+  iconContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+    backgroundColor: COLORS.lightGreen,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.white,
-    width: '30%',
-    height: 100,
-    borderRadius: 10,
+  },
+  infoTile: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   infoText: {
-    color: COLORS.darkGreen,
+    color: COLORS.white,
     fontSize: SIZES.xLarge,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   infoTitle: {
-    color: COLORS.darkGreen,
+    color: COLORS.white,
     fontSize: SIZES.small,
     fontWeight: 'medium',
     textAlign: 'center',

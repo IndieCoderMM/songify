@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { Audio } from 'expo-av';
+import { AntDesign } from '@expo/vector-icons';
 
 import { Heart2Icon, HeartOutlineIcon, XIcon } from '../../constants/images';
 import { Controls, ProgressBar } from '../../components';
@@ -143,19 +144,11 @@ const Player = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Image
-            source={XIcon}
-            style={{ width: 30, height: 30 }}
-            resizeMode="contain"
-          />
+          <AntDesign name="close" size={40} color={COLORS.lightGreen} />
         </TouchableOpacity>
         <Text style={styles.headerText}>Playing Music</Text>
         <TouchableOpacity onPress={addToFavorites}>
-          <Image
-            source={HeartOutlineIcon}
-            style={{ width: 40, height: 40 }}
-            resizeMode="contain"
-          />
+          <AntDesign name="hearto" size={40} color={COLORS.lightGreen} />
         </TouchableOpacity>
       </View>
 

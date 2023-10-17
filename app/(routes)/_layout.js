@@ -1,29 +1,10 @@
 import { Tabs } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import {
-  HeartIcon,
-  HomeIcon,
-  PlayIcon,
-  SettingIcon,
-  UserIcon,
-} from '../../constants/images';
+import { FontAwesome } from '@expo/vector-icons';
+
+import { PlayIcon } from '../../constants/images';
 import { Image } from 'react-native';
 import { COLORS, SIZES } from '../../constants/theme';
-
-const TabIcon = ({ focused, icon }) => {
-  return (
-    <Image
-      source={icon}
-      resizeMode="contain"
-      style={{
-        tintColor: focused ? COLORS.lightGreen : COLORS.darkGreen,
-        borderWidth: icon === PlayIcon ? 2 : 0,
-        borderColor: COLORS.white,
-        borderRadius: icon === PlayIcon ? 50 : 0,
-      }}
-    />
-  );
-};
 
 const Layout = () => {
   const screenOptions = {
@@ -48,7 +29,11 @@ const Layout = () => {
           name="home"
           options={{
             tabBarIcon: ({ focused }) => (
-              <TabIcon focused={focused} icon={HomeIcon} />
+              <FontAwesome
+                name="home"
+                size={55}
+                color={focused ? COLORS.lightGreen : COLORS.darkGreen}
+              />
             ),
             tabBarShowLabel: false,
             tabBarHideOnKeyboard: true,
@@ -58,7 +43,11 @@ const Layout = () => {
           name="favourites"
           options={{
             tabBarIcon: ({ focused }) => (
-              <TabIcon focused={focused} icon={HeartIcon} />
+              <FontAwesome
+                name="heart"
+                size={45}
+                color={focused ? COLORS.lightGreen : COLORS.darkGreen}
+              />
             ),
             tabBarShowLabel: false,
           }}
@@ -67,7 +56,16 @@ const Layout = () => {
           name="player"
           options={{
             tabBarIcon: ({ focused }) => (
-              <TabIcon focused={focused} icon={PlayIcon} />
+              <Image
+                source={PlayIcon}
+                resizeMode="contain"
+                style={{
+                  tintColor: focused ? COLORS.lightGreen : COLORS.darkGreen,
+                  borderWidth: 2,
+                  borderColor: COLORS.white,
+                  borderRadius: 50,
+                }}
+              />
             ),
             tabBarShowLabel: false,
             tabBarStyle: {
@@ -79,7 +77,11 @@ const Layout = () => {
           name="profile"
           options={{
             tabBarIcon: ({ focused }) => (
-              <TabIcon focused={focused} icon={UserIcon} />
+              <FontAwesome
+                name="user-circle"
+                size={48}
+                color={focused ? COLORS.lightGreen : COLORS.darkGreen}
+              />
             ),
             tabBarShowLabel: false,
           }}
@@ -88,7 +90,11 @@ const Layout = () => {
           name="settings"
           options={{
             tabBarIcon: ({ focused }) => (
-              <TabIcon focused={focused} icon={SettingIcon} />
+              <FontAwesome
+                name="cog"
+                size={50}
+                color={focused ? COLORS.lightGreen : COLORS.darkGreen}
+              />
             ),
             tabBarShowLabel: false,
           }}

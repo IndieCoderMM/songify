@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
@@ -16,7 +17,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { appSignUp, googleSignIn } from '../../store/auth';
 import styles from '../../styles/auth.style';
 import { SIZES } from '../../constants/theme';
-import { Logo, GoogleLogo, FacebookLogo } from '../../constants/images';
+import { Logo } from '../../constants/images';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -134,15 +135,16 @@ const SignUp = () => {
           }}
           style={styles.iconBtn}
         >
-          <Image source={GoogleLogo} width={30} height={30} />
+          <AntDesign name="google" size={30} color="white" />
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => {
             Alert.alert('Not Supported', 'Facebook login is not supported yet');
           }}
           style={styles.iconBtn}
         >
-          <Image source={FacebookLogo} width={30} height={30} />
+          <FontAwesome5 name="facebook" size={30} color="white" />
         </TouchableOpacity>
       </View>
 
