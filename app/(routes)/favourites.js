@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, SafeAreaView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
@@ -7,11 +7,17 @@ import { useEffect } from 'react';
 import PlayerStore, { fetchAllSongs } from '../../store/player';
 import QueryStore from '../../store/query';
 import { MusicFeed } from '../../components';
+import AuthStore from '../../store/auth';
 
 const Favourite = () => {
   const { isActive, songs: allSongs } = PlayerStore.useState();
   const { query } = QueryStore.useState();
+  const { user } = AuthStore.useState();
   const router = useRouter();
+
+  const favorites = allSongs.filter((song) =>
+    user?.favorites?.includes(song.id),
+  );
 
   useEffect(() => {
     if (!isActive) {
@@ -20,9 +26,9 @@ const Favourite = () => {
   }, [isActive]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>My Favourite Songs</Text>
+        <Text style={styles.title}>My Favourites</Text>
       </View>
       <View
         style={{
@@ -57,11 +63,18 @@ const Favourite = () => {
           }}
         >
           <MaterialIcons name="library-music" size={28} color={COLORS.white} />
-          <Text style={styles.text}>{allSongs.length} Tracks</Text>
+          <Text style={styles.text}>
+            {favorites.length} {favorites.length === 1 ? 'Track' : 'Tracks'}
+          </Text>
         </View>
       </View>
-      <MusicFeed data={allSongs} />
-    </View>
+      {favorites.length === 0 && (
+        <Text style={{ color: COLORS.white, textAlign: 'center' }}>
+          You have no favorite songs yet
+        </Text>
+      )}
+      <MusicFeed data={favorites} />
+    </SafeAreaView>
   );
 };
 

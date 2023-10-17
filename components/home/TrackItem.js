@@ -3,12 +3,13 @@ import { useRouter } from 'expo-router';
 
 import { COLORS, SIZES } from '../../constants/theme';
 import formatDuration from '../../utils/formatDuration';
-import { setCurrentSong } from '../../store/player';
+import { setCurrentSong, setIsPlaying } from '../../store/player';
 
 const TrackItem = ({ albumCover, title, artist, duration, index }) => {
   const router = useRouter();
 
   const playMusic = () => {
+    setIsPlaying(false);
     setCurrentSong(index);
 
     router.push('/player');

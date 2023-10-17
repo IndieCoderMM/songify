@@ -31,7 +31,7 @@ const SignIn = () => {
 
     const resp = await appSignIn(email, password);
     if (resp?.user) {
-      router.push('/(routes)/home');
+      router.push('/home');
     } else {
       console.log(resp.error);
       Alert.alert('Login Error', resp.error?.message);

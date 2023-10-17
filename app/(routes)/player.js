@@ -11,7 +11,6 @@ import { useRouter } from 'expo-router';
 import { Audio } from 'expo-av';
 import { AntDesign } from '@expo/vector-icons';
 
-import { Heart2Icon, HeartOutlineIcon, XIcon } from '../../constants/images';
 import { Controls, ProgressBar } from '../../components';
 import { COLORS, SIZES } from '../../constants/theme';
 import PlayerStore, {
@@ -21,6 +20,9 @@ import PlayerStore, {
   setIsPlaying,
 } from '../../store/player';
 import QueryStore from '../../store/query';
+import AuthStore from '../../store/auth';
+import { doc, updateDoc } from 'firebase/firestore';
+import { usersRef } from '../../firebase-config';
 
 const Player = () => {
   const router = useRouter();
@@ -30,18 +32,21 @@ const Player = () => {
     currentAudio,
     currentSongMetadata: currentSong,
   } = PlayerStore.useState();
+  const { user } = AuthStore.useState();
   const { query } = QueryStore.useState();
 
   const [currentSound, setCurrentSound] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
+  const [isFavorite, setIsFavorite] = useState(
+    user?.favorites?.includes(currentSong.id),
+  );
+
   useEffect(() => {
     if (!isActive) {
       fetchAllSongs(query);
     }
-
-    play({ uri: currentAudio });
 
     const unsub = PlayerStore.subscribe(
       (s) => s.currentAudio,
@@ -50,8 +55,24 @@ const Player = () => {
       },
     );
 
-    return () => unsub();
+    play({ uri: currentAudio });
+
+    return () => {
+      unsub();
+    };
   }, []);
+
+  useEffect(() => {
+    return currentSound
+      ? () => {
+          currentSound.unloadAsync();
+        }
+      : undefined;
+  }, [currentSound]);
+
+  useEffect(() => {
+    setIsFavorite(user.favorites?.includes(currentSong.id));
+  }, [user.favorites, currentSong]);
 
   const play = async ({ uri }) => {
     if (currentSound) {
@@ -135,9 +156,26 @@ const Player = () => {
     await currentSound.playFromPositionAsync(valueInSeconds * 1000);
   };
 
-  const addToFavorites = () => {
-    // TODO: Add to favorites
-    console.log('Add to favorites');
+  const toggleFavorite = async () => {
+    if (isFavorite) {
+      const newFavorites = user.favorites.filter((id) => id !== currentSong.id);
+      await updateDoc(doc(usersRef, user.uid), {
+        favorites: newFavorites,
+      });
+      AuthStore.update((store) => {
+        store.user.favorites = newFavorites;
+      });
+      setIsFavorite(false);
+    } else {
+      const newFavorites = [...user.favorites, currentSong.id];
+      await updateDoc(doc(usersRef, user.uid), {
+        favorites: newFavorites,
+      });
+      AuthStore.update((store) => {
+        store.user.favorites = newFavorites;
+      });
+      setIsFavorite(true);
+    }
   };
 
   return (
@@ -147,8 +185,12 @@ const Player = () => {
           <AntDesign name="close" size={40} color={COLORS.lightGreen} />
         </TouchableOpacity>
         <Text style={styles.headerText}>Playing Music</Text>
-        <TouchableOpacity onPress={addToFavorites}>
-          <AntDesign name="hearto" size={40} color={COLORS.lightGreen} />
+        <TouchableOpacity onPress={toggleFavorite}>
+          {isFavorite ? (
+            <AntDesign name="heart" size={40} color={COLORS.lightGreen} />
+          ) : (
+            <AntDesign name="hearto" size={40} color={COLORS.lightGreen} />
+          )}
         </TouchableOpacity>
       </View>
 

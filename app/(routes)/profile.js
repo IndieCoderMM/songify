@@ -1,10 +1,15 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView } from 'react-native';
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 
 import AuthStore from '../../store/auth';
 import { COLORS, SIZES } from '../../constants/theme';
+import PlayerStore from '../../store/player';
+import MusicFeed from '../../components/home/MusicFeed';
+
 const Profile = () => {
   const { user, isLoggedIn } = AuthStore.useState();
+  const { songs } = PlayerStore.useState();
+
   if (!isLoggedIn) {
     return (
       <View style={styles.container}>
@@ -14,7 +19,7 @@ const Profile = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.imageContainer}>
           {user.photoURL ? (
@@ -29,7 +34,7 @@ const Profile = () => {
           )}
         </View>
         <View>
-          <Text style={styles.text}>{user.displayName}</Text>
+          <Text style={styles.text}>{user.name}</Text>
           <Text style={styles.smallText}>{user.email}</Text>
         </View>
       </View>
@@ -42,14 +47,14 @@ const Profile = () => {
               color={COLORS.darkGreen}
             />
           </View>
-          <Text style={styles.infoText}>156</Text>
+          <Text style={styles.infoText}>{songs.length}</Text>
           <Text style={styles.infoTitle}>Songs Listened</Text>
         </View>
         <View style={styles.infoTile}>
           <View style={styles.iconContainer}>
             <MaterialIcons name="favorite" size={40} color={COLORS.darkGreen} />
           </View>
-          <Text style={styles.infoText}>34</Text>
+          <Text style={styles.infoText}>{user.favorites?.length || 0}</Text>
           <Text style={styles.infoTitle}>Favourites</Text>
         </View>
         <View style={styles.infoTile}>
@@ -60,7 +65,7 @@ const Profile = () => {
               color={COLORS.darkGreen}
             />
           </View>
-          <Text style={styles.infoText}>15</Text>
+          <Text style={styles.infoText}>{user.playlists?.length || 0}</Text>
           <Text style={styles.infoTitle}>Playlists</Text>
         </View>
       </View>
@@ -70,7 +75,7 @@ const Profile = () => {
           flexDirection: 'row',
           width: '100%',
           paddingHorizontal: 20,
-          marginVertical: 30,
+          marginVertical: 10,
         }}
       >
         <FontAwesome5
@@ -85,10 +90,8 @@ const Profile = () => {
         <Text style={styles.text}>Recent Songs</Text>
       </View>
 
-      <View>
-        <Text style={styles.smallText}>Empty! No recent songs to show</Text>
-      </View>
-    </View>
+      <MusicFeed data={songs.slice(0, 8)} />
+    </SafeAreaView>
   );
 };
 
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 30,
     borderRadius: 30,
-    marginVertical: 20,
+    marginBottom: 20,
   },
   iconContainer: {
     width: 60,

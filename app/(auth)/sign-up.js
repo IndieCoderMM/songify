@@ -35,7 +35,7 @@ const SignUp = () => {
     const signInWithGoogle = async ({ id_token }) => {
       const resp = await googleSignIn({ id_token });
       if (resp?.user) {
-        router.replace('/home');
+        router.replace('/(routes)/home');
       } else {
         console.log(resp.error);
         Alert.alert('Sign In Error', resp.error?.message);
@@ -60,7 +60,7 @@ const SignUp = () => {
 
     const resp = await appSignUp(email, password, name);
     if (resp?.user) {
-      router.replace('/home');
+      router.push('/home');
     } else {
       console.log(resp.error);
       Alert.alert('Sign Up Error', resp.error?.message);

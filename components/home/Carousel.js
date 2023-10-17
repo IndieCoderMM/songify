@@ -1,24 +1,14 @@
 import { View, StyleSheet, Dimensions } from 'react-native';
 import SnapCarousel, { Pagination } from 'react-native-snap-carousel';
 import { COLORS } from '../../constants/theme';
-import { Banner1, Banner2, Banner3 } from '../../constants/images';
+import { Banner1, Banner2, Banner3, Banner4 } from '../../constants/images';
 import CarouselCard from './CarouselCard';
 import { useState } from 'react';
 
 const SLIDER_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
-const items = [
-  {
-    image: Banner1,
-  },
-  {
-    image: Banner2,
-  },
-  {
-    image: Banner3,
-  },
-];
+const items = [Banner1, Banner2, Banner3, Banner4];
 
 const Carousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -29,7 +19,7 @@ const Carousel = () => {
         <SnapCarousel
           layout="default"
           data={items}
-          renderItem={({ item }) => <CarouselCard image={item.image} />}
+          renderItem={({ item }) => <CarouselCard image={item} />}
           onSnapToItem={(index) => setActiveIndex(index)}
           sliderWidth={SLIDER_WIDTH}
           itemWidth={ITEM_WIDTH}

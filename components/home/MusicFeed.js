@@ -8,6 +8,7 @@ const VirtualizedView = ({ children }) => (
     keyExtractor={null}
     ListEmptyComponent={null}
     ListHeaderComponent={() => <>{children}</>}
+    style={{ flex: 1, width: '100%' }}
   />
 );
 
