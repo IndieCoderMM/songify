@@ -33,7 +33,8 @@
     "expo-auth-session": "~5.0.2",
     "expo-crypto": "~12.4.1",
     "expo-web-browser": "~12.3.2",
-    "expo-updates": "~0.18.16"
+    "expo-updates": "~0.18.16",
+    "expo-dev-client": "~2.4.11"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",

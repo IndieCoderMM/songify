@@ -5,29 +5,31 @@ import AuthStore from '../../store/auth';
 import { COLORS, SIZES } from '../../constants/theme';
 import PlayerStore from '../../store/player';
 import MusicFeed from '../../components/home/MusicFeed';
+import { useRouter } from 'expo-router';
 
 const Profile = () => {
   const { user, isLoggedIn } = AuthStore.useState();
   const { songs } = PlayerStore.useState();
+  const router = useRouter();
 
   if (!isLoggedIn) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>Please login to view your profile</Text>
-      </View>
-    );
+    router.replace('/sign-in');
+    return null;
   }
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.imageContainer}>
           {user.photoURL ? (
             <Image
-              source={user.photoURL}
+              src={user.photoURL}
               resizeMode="contain"
-              width={100}
-              height={100}
+              style={{
+                width: 100,
+                height: 100,
+                borderWidth: 2,
+                borderColor: COLORS.white,
+              }}
             />
           ) : (
             <FontAwesome5 name="user" size={50} color={COLORS.darkGreen} />
@@ -55,7 +57,9 @@ const Profile = () => {
             <MaterialIcons name="favorite" size={40} color={COLORS.darkGreen} />
           </View>
           <Text style={styles.infoText}>{user.favorites?.length || 0}</Text>
-          <Text style={styles.infoTitle}>Favourites</Text>
+          <Text style={styles.infoTitle}>
+            {user.favorites?.length === 1 ? 'Favorite' : 'Favorites'}
+          </Text>
         </View>
         <View style={styles.infoTile}>
           <View style={styles.iconContainer}>
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     display: 'flex',
     flexDirection: 'row',
-    width: '90%',
+    width: '95%',
     justifyContent: 'space-between',
     backgroundColor: COLORS.lighterGreen,
     paddingVertical: 20,
@@ -150,6 +154,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   infoTile: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

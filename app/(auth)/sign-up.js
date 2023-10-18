@@ -25,23 +25,25 @@ const SignUp = () => {
   const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
     androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
+    redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI,
   });
   const router = useRouter();
   const nameRef = useRef('');
   const emailRef = useRef('');
   const passwordRef = useRef('');
 
-  useEffect(() => {
-    const signInWithGoogle = async ({ id_token }) => {
-      const resp = await googleSignIn({ id_token });
-      if (resp?.user) {
-        router.replace('/(routes)/home');
-      } else {
-        console.log(resp.error);
-        Alert.alert('Sign In Error', resp.error?.message);
-      }
-    };
+  const signInWithGoogle = async ({ id_token }) => {
+    const resp = await googleSignIn({ id_token });
+    // console.log('Google Sign Up Response', resp);
+    if (resp.user) {
+      router.replace('/home');
+    } else {
+      console.log(resp.error);
+      Alert.alert('Sign In Error', resp.error?.message);
+    }
+  };
 
+  useEffect(() => {
     if (response?.type === 'success') {
       const { id_token } = response.params;
       signInWithGoogle({ id_token });
@@ -60,7 +62,7 @@ const SignUp = () => {
 
     const resp = await appSignUp(email, password, name);
     if (resp?.user) {
-      router.push('/home');
+      router.replace('/home');
     } else {
       console.log(resp.error);
       Alert.alert('Sign Up Error', resp.error?.message);

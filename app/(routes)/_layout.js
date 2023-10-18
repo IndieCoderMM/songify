@@ -1,9 +1,8 @@
 import { Tabs } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
-import { PlayIcon } from '../../constants/images';
-import { Image } from 'react-native';
+import { View } from 'react-native';
 import { COLORS, SIZES } from '../../constants/theme';
 
 const Layout = () => {
@@ -56,16 +55,30 @@ const Layout = () => {
           name="player"
           options={{
             tabBarIcon: ({ focused }) => (
-              <Image
-                source={PlayIcon}
-                resizeMode="contain"
+              <View
                 style={{
-                  tintColor: focused ? COLORS.lightGreen : COLORS.darkGreen,
+                  position: 'relative',
+                  width: 80,
+                  height: 80,
+                  borderRadius: 100,
                   borderWidth: 2,
                   borderColor: COLORS.white,
-                  borderRadius: 50,
+                  backgroundColor: focused
+                    ? COLORS.lightGreen
+                    : COLORS.darkGreen,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
-              />
+              >
+                <FontAwesome5
+                  name="play"
+                  size={45}
+                  color={COLORS.white}
+                  style={{
+                    transform: [{ translateX: 4 }],
+                  }}
+                />
+              </View>
             ),
             tabBarShowLabel: false,
             tabBarStyle: {

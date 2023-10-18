@@ -7,9 +7,9 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { appSignIn } from '../../store/auth';
+import AuthStore, { appSignIn } from '../../store/auth';
 import { Link, useRouter } from 'expo-router';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import styles from '../../styles/auth.style';
 import { SIZES } from '../../constants/theme';
@@ -19,6 +19,8 @@ const SignIn = () => {
   const router = useRouter();
   const emailRef = useRef('');
   const passwordRef = useRef('');
+
+  const { isLoggedIn } = AuthStore.useState();
 
   const handleSignIn = async () => {
     const email = emailRef.current.trim();
@@ -30,8 +32,8 @@ const SignIn = () => {
     }
 
     const resp = await appSignIn(email, password);
-    if (resp?.user) {
-      router.push('/home');
+    if (resp.user) {
+      router.replace('/home');
     } else {
       console.log(resp.error);
       Alert.alert('Login Error', resp.error?.message);

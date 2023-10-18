@@ -157,6 +157,7 @@ const Player = () => {
   };
 
   const toggleFavorite = async () => {
+    if (!user) return;
     if (isFavorite) {
       const newFavorites = user.favorites.filter((id) => id !== currentSong.id);
       await updateDoc(doc(usersRef, user.uid), {
