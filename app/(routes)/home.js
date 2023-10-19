@@ -21,7 +21,7 @@ const Home = () => {
   const { isActive, songs: allSongs } = PlayerStore.useState();
   const { query, search } = QueryStore.useState();
   const [inputText, setInputText] = useState('');
-  const debouncedSearch = useDebounce(inputText, 200);
+  const debouncedSearch = useDebounce(inputText, 100);
 
   useEffect(() => {
     if (!isActive) {

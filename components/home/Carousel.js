@@ -1,5 +1,5 @@
 import { View, StyleSheet, Dimensions } from 'react-native';
-import SnapCarousel, { Pagination } from 'react-native-snap-carousel';
+import SnapCarousel, { Pagination } from 'react-native-new-snap-carousel';
 import { COLORS } from '../../constants/theme';
 import { Banner1, Banner2, Banner3, Banner4 } from '../../constants/images';
 import CarouselCard from './CarouselCard';
