@@ -12,27 +12,42 @@ import { useEffect, useRef } from 'react';
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 
 import * as Google from 'expo-auth-session/providers/google';
+import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as WebBrowser from 'expo-web-browser';
 
 import { appSignUp, googleSignIn } from '../../store/auth';
 import styles from '../../styles/auth.style';
 import { SIZES } from '../../constants/theme';
 import { Logo } from '../../constants/images';
+import useAuthProvider from '../../hooks/useAuthProvider';
 
 WebBrowser.maybeCompleteAuthSession();
 
+const GOOGLE_CONFIG = {
+  iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
+  androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
+};
+
+const FACEBOOK_CONFIG = {
+  clientId: process.env.EXPO_PUBLIC_FACEBOOK_CLIENT_ID,
+};
+
 const SignUp = () => {
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
-    androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
-    redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI,
-  });
+  const promptAsyncGoogle = useAuthProvider('google', GOOGLE_CONFIG, (resp) =>
+    onGoogleSuccess(resp),
+  );
+  const promptAsyncFacebook = useAuthProvider(
+    'facebook',
+    FACEBOOK_CONFIG,
+    (resp) => onFacebookSuccess(resp),
+  );
   const router = useRouter();
   const nameRef = useRef('');
   const emailRef = useRef('');
   const passwordRef = useRef('');
 
-  const signInWithGoogle = async ({ id_token }) => {
+  const onGoogleSuccess = async (response) => {
+    const { id_token } = response.params;
     const resp = await googleSignIn({ id_token });
     // console.log('Google Sign Up Response', resp);
     if (resp.user) {
@@ -43,12 +58,17 @@ const SignUp = () => {
     }
   };
 
-  useEffect(() => {
-    if (response?.type === 'success') {
-      const { id_token } = response.params;
-      signInWithGoogle({ id_token });
+  const onFacebookSuccess = async (response) => {
+    const { access_token } = response.params;
+    const resp = await facebookSignIn({ access_token });
+    console.log('Facebook Sign Up Response', resp);
+    if (resp.user) {
+      router.replace('/home');
+    } else {
+      console.log(resp.error);
+      Alert.alert('Sign In Error', resp.error?.message);
     }
-  }, [response]);
+  };
 
   const handleSignUp = async () => {
     const name = nameRef.current.trim();
@@ -133,7 +153,7 @@ const SignUp = () => {
       <View style={styles.iconContainer}>
         <TouchableOpacity
           onPress={() => {
-            promptAsync();
+            promptAsyncGoogle();
           }}
           style={styles.iconBtn}
         >
@@ -142,7 +162,7 @@ const SignUp = () => {
 
         <TouchableOpacity
           onPress={() => {
-            Alert.alert('Not Supported', 'Facebook login is not supported yet');
+            promptAsyncFacebook();
           }}
           style={styles.iconBtn}
         >

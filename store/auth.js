@@ -6,6 +6,7 @@ import {
   updateProfile,
   GoogleAuthProvider,
   signInWithCredential,
+  FacebookAuthProvider,
 } from 'firebase/auth';
 import { auth, usersRef } from '../firebase-config';
 import { doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore';
@@ -103,6 +104,31 @@ export const appSignUp = async (email, password, name) => {
 
 export const googleSignIn = async ({ id_token }) => {
   const credential = GoogleAuthProvider.credential(id_token);
+  try {
+    await signInWithCredential(auth, credential);
+
+    let user = null;
+    const docRef = doc(usersRef, auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    // Fetch user data from firestore
+    if (docSnap.exists()) {
+      user = docSnap.data();
+    } else {
+      user = await createNewUser(auth);
+    }
+    AuthStore.update((store) => {
+      store.user = user;
+      store.isLoggedIn = user ? true : false;
+    });
+
+    return { user };
+  } catch (error) {
+    return { error };
+  }
+};
+
+export const facebookSignIn = async ({ access_token }) => {
+  const credential = FacebookAuthProvider.credential(access_token);
   try {
     await signInWithCredential(auth, credential);
 
