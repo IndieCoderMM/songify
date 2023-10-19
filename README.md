@@ -19,6 +19,8 @@
 
 **Songify** is a feature-rich Spotify Clone that allows users to play music, search for songs, and create their favorite playlists. Songify is built with React Native and Expo, and utilizes the Deezer API to fetch songs data.
 
+![Songify](./screenshot.png)
+
 ## Technologies Used
 
 - React Native
@@ -84,19 +86,34 @@ With a focus on clean code and maintainability, the project structure is organiz
 
 To run this project locally, follow these steps:
 
-1. Clone the repo
+1. Clone the repo to your local machine.
    
 ```sh
 git clone git@github.com:IndieCoderMM/songify.git
 ```
 
-2. Install dependencies
+2. Change into the project directory and install dependencies with:
 
 ```sh
 npm install
 ```
 
-3. Start the Expo server
+3. Create a `.env` file in the root directory and add the following environment variables:
+
+```sh
+EXPO_PUBLIC_FIREBASE_API_KEY=<your-firebase-api-key>
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=<your-firebase-auth-domain>
+EXPO_PUBLIC_FIREBASE_PROJECT_ID=<your-firebase-project-id>
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=<your-firebase-storage-bucket>
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=<your-firebase-messaging-sender-id>
+EXPO_PUBLIC_FIREBASE_APP_ID=<your-firebase-app-id>
+EXPO_PUBLIC_RAPID_API_KEY=<your-rapid-api-key>
+EXPO_PUBLIC_IOS_CLIENT_ID=<your-ios-client-id>
+EXPO_PUBLIC_ANDROID_CLIENT_ID=<your-android-client-id>
+EXPO_PUBLIC_FACEBOOK_CLIENT_ID=<your-facebook-client-id>
+``` 
+
+4. Start the Expo server with the following command:
 
 ```sh
 npx expo start
