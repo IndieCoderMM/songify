@@ -9,7 +9,7 @@ const Settings = () => {
   const router = useRouter();
   const handleSignOut = () => {
     appSignOut();
-    router.push('/sign-in');
+    router.replace('/sign-in');
     Alert.alert('Logged Out', 'You have been logged out');
   };
   return (
